@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Kdramalist</string>
+    <string name="nama_film">nama_film</string>
+    <string name="detail">detail</string>
+    <string name="rating">rating</string>
+    <string name="data_pribadi">Naufal irfani</string>
+    <string name="email">naufal.irfani3@gmail.com</string>
+    <string name="about">about</string>
+    <string name="details">Details</string>
+    <string name="cast">Cast</string>
+    <string name="episode_guide">Episode Guide</string>
+    <string name="photos">Photos</string>
+    <string name="rating_user">rating_user</string>
+    <string name="sinopsis">sinopsis</string>
+    <string name="film_detail">film_detail</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="find_korean_dramas">Find Korean Dramas</string>
+    <string name="search">search</string>
+    <string name="nothing_found">Tidak ada yang ditemukan</string>
+    <string name="login">Sign in</string>
+    <string name="email_or_username">Username or email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="welcome_to_kdramalist">Sign in to Kdramalist</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="have_an_account">Already have an account?</string>
+    <string name="remember_me">Keep me Sign in</string>
+</resources>
