@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kdramalist</string>
+    <string name="app_name">KediriLagi</string>
     <string name="nama_film">nama_film</string>
     <string name="detail">detail</string>
     <string name="rating">rating</string>
@@ -16,7 +16,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="find_korean_dramas">Find Korean Dramas</string>
+    <string name="find_korean_dramas">Cari Tempat Wisata</string>
     <string name="search">search</string>
     <string name="nothing_found">Tidak ada yang ditemukan</string>
     <string name="login">Sign in</string>

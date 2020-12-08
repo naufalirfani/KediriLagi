@@ -25,6 +25,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -62,9 +63,6 @@ class MainActivity : AppCompatActivity() {
         this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setCustomView(R.layout.custom_action_bar)
-
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_account_circle_black_24dp)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val actionbar = supportActionBar
         //set actionbar title
@@ -144,51 +142,51 @@ class MainActivity : AppCompatActivity() {
 
         etSearch = findViewById(R.id.mytextText)
         btn_search.setOnClickListener {
-            val loading = ProgressDialog(this)
-            loading.setMessage("Mencari data...")
-            loading.show()
-            search.listSearch.clear()
-            search.list2.clear()
-            search.list3.clear()
-            search.searchJudul(etSearch.text.toString(), arrayList,list, arrayList2)
-            loading.dismiss()
-            if(search.listSearch.size == 0){
-                tv_nothing.visibility = View.VISIBLE
-                tv_nothing.text = getString(R.string.nothing_found)
-            }
-            else{
-                tv_nothing.visibility = View.GONE
-            }
-            val adapter2 = RVAAdapterStudent(thisActivity, applicationContext, search.listSearch, search.list2, search.list3)
-            adapter2.notifyDataSetChanged()
-            mRecyclerView1.adapter = adapter2
-
-            val dialog: LinearLayout = findViewById(R.id.searchLayout)
-            val animation = AnimationUtils.loadAnimation(this, R.anim.anim_hide)
-            animation.duration = 300
-            dialog.animation = animation
-            dialog.animate()
-            animation.start()
-            dialog.visibility = LinearLayout.GONE
-
-            //close virtual keyboard
-            closeKeyBoard()
+            perfomSearch()
         }
 
-        auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        dbReference = firebaseDatabase.getReference("users2")
-        if (user != null) {
-            val name = intent.getStringExtra("username")
-            val id = user.uid
-            val email2 = user.email
-            val user2 = UserInfo(name, email2)
-            if(!TextUtils.isEmpty(name) && !(name.contains("@"))){
-                dbReference.child(id).setValue(user2)
+        etSearch.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                etSearch.isCursorVisible = false
+                perfomSearch()
+                return@OnEditorActionListener true
             }
-        }
+            false
+        })
+
         getImagepage()
+    }
+
+    private fun perfomSearch(){
+        val loading = ProgressDialog(this)
+        loading.setMessage("Mencari data...")
+        loading.show()
+        search.listSearch.clear()
+        search.list2.clear()
+        search.list3.clear()
+        search.searchJudul(etSearch.text.toString(), arrayList,list, arrayList2)
+        loading.dismiss()
+        if(search.listSearch.size == 0){
+            tv_nothing.visibility = View.VISIBLE
+            tv_nothing.text = getString(R.string.nothing_found)
+        }
+        else{
+            tv_nothing.visibility = View.GONE
+        }
+        val adapter2 = RVAAdapterStudent(thisActivity, applicationContext, search.listSearch, search.list2, search.list3)
+        adapter2.notifyDataSetChanged()
+        mRecyclerView1.adapter = adapter2
+
+        val dialog: LinearLayout = findViewById(R.id.searchLayout)
+        val animation = AnimationUtils.loadAnimation(this, R.anim.anim_hide)
+        animation.duration = 300
+        dialog.animation = animation
+        dialog.animate()
+        animation.start()
+        dialog.visibility = LinearLayout.GONE
+
+        //close virtual keyboard
+        closeKeyBoard()
     }
 
     fun getImagepage(){
@@ -225,13 +223,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == android.R.id.home) {
-            val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
-            startActivity(intentAboutMe)
-            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
-            finish()
-            searchLayout.visibility = View.GONE
-        }
         if(id == R.id.search_item){
             etSearch = findViewById(R.id.mytextText)
             etSearch.text = null
@@ -270,7 +261,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAllStudents(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
-        db.collection("kdramas")
+        db.collection("wisata")
                 .get()
                 .addOnSuccessListener { result ->
                     arrayList.clear()
@@ -324,7 +315,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAllRating(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
-        db.collection("kdramas")
+        db.collection("wisata")
                 .orderBy("rating", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
@@ -379,8 +370,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAllRelease(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
-        db.collection("kdramas")
-                .orderBy("episode", Query.Direction.DESCENDING)
+        db.collection("wisata")
+                .orderBy("judul", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener { result ->
                     arrayList.clear()

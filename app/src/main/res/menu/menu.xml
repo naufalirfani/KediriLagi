@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/search_item"
-            android:icon="@drawable/ic_search_white_24dp"
-            app:showAsAction="always"
-            android:title="@string/search" />
+        android:id="@+id/search_item"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="always"
+        android:title="@string/search" />
     <item
-            android:id="@+id/sort_item"
-            android:icon="@drawable/ic_sort_white_24dp"
-            app:showAsAction="ifRoom"
-            android:title="@string/about">
+        android:id="@+id/sort_item"
+        android:icon="@drawable/ic_sort_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/about">
         <menu>
             <item
-                    android:id="@+id/rating_sort"
-                    android:title="Top Rated"
-                    app:showAsAction="never"/>
+                android:id="@+id/release_sort"
+                android:title="Alphabetical"
+                app:showAsAction="never"/>
             <item
-                    android:id="@+id/popular_sort"
-                    android:title="Most Popular"
-                    app:showAsAction="never"/>
+                android:id="@+id/rating_sort"
+                android:title="Top Rated"
+                app:showAsAction="never"/>
             <item
-                    android:id="@+id/release_sort"
-                    android:title="Release Date"
-                    app:showAsAction="never"/>
+                android:id="@+id/popular_sort"
+                android:title="Most Popular"
+                app:showAsAction="never"/>
         </menu>
     </item>
 

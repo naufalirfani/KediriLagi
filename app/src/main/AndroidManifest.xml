@@ -19,8 +19,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".PhotoActivity"></activity>
-        <activity android:name=".SingUpActivity" />
-        <activity android:name=".LoginActivity" />
 
         <provider
                 android:name="android.support.v4.content.FileProvider"
@@ -33,7 +31,6 @@
         </provider>
 
         <activity android:name=".DetailFilmActivity" />
-        <activity android:name=".AboutMe" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

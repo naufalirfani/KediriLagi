@@ -48,11 +48,11 @@ class FragmentDetail : Fragment() {
     private var list2: ArrayList<String> = arrayListOf()
     private var listRating: ArrayList<String> = arrayListOf()
     private var listDetail: ArrayList<String> = arrayListOf()
-    private var id: String? = null
+    private val listPhoto2 = ArrayList<String>()
     private var watch: String? = null
 
     // newInstance constructor for creating fragment with arguments
-    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?, listRating: ArrayList<String>, listDetail: ArrayList<String>, watch: String?): FragmentDetail? {
+    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>?, listRating: ArrayList<String>, listDetail: ArrayList<String>, watch: String?): FragmentDetail? {
         val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
@@ -64,7 +64,6 @@ class FragmentDetail : Fragment() {
         args.putStringArrayList("list2", list2)
         args.putStringArrayList("listRating", listRating)
         args.putStringArrayList("listDetail", listDetail)
-        args.putString("id", id)
         args.putString("watch", watch)
         fragmentDetail.setArguments(args)
         return fragmentDetail
@@ -81,7 +80,6 @@ class FragmentDetail : Fragment() {
         list2 = arguments!!.getStringArrayList("list2")
         listRating = arguments!!.getStringArrayList("listRating")
         listDetail = arguments!!.getStringArrayList("listDetail")
-        id = arguments!!.getString("id")
         watch = arguments!!.getString("watch")
     }
 
@@ -97,12 +95,40 @@ class FragmentDetail : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val list = ArrayList<Film>()
-        list.addAll(Data.listData)
-        rvDetail.setHasFixedSize(true)
-        rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, listRating, listDetail, watch!!) }
-        adapter?.notifyDataSetChanged()
-        rvDetail.adapter = adapter
+        getPhotos()
+    }
+
+    fun getPhotos(){
+        val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
+        val postListener2 = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(listPhoto2.isNotEmpty()){
+                    listPhoto2.clear()
+                }
+                for (data: DataSnapshot in dataSnapshot.children){
+                    val hasil = data.getValue(Upload::class.java)
+                    listPhoto2.add(hasil?.url!!)
+                }
+
+                val list = ArrayList<Film>()
+                list.addAll(Data.listData)
+                rvDetail.setHasFixedSize(true)
+                rvDetail.layoutManager = LinearLayoutManager(context)
+                val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, listPhoto2, activity!!, listRating, listDetail, watch!!) }
+                adapter?.notifyDataSetChanged()
+                rvDetail.adapter = adapter
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        var judul2 = judul
+        if(judul2!!.contains(".")){
+            judul2 = judul2.replace(".", "")
+            dbReference2.child(judul2).addValueEventListener(postListener2)
+        }
+        else{
+            dbReference2.child(judul2).addValueEventListener(postListener2)
+        }
     }
 }

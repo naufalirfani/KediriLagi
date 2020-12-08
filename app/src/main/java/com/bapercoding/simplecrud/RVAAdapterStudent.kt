@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.student_list.view.*
 
 class RVAAdapterStudent(private val activity: Activity, private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>, private val listPage: ArrayList<String>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
@@ -22,7 +23,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.student_list,parent,false))
     }
 
-    override fun getItemCount(): Int = arrayList!!.size
+    override fun getItemCount(): Int = arrayList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[position]
@@ -33,20 +34,28 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
 
 
 //        holder.view.tv_item_name.text = arrayList[position].nim
-        val ratingValue = arrayList?.get(position)?.rating!!.toFloat() / 2
+        val ratingValue = arrayList[position].rating!!.toFloat()
         holder.view.ratingbar.rating = ratingValue
-        holder.view.tv_item_name.text = arrayList?.get(position)?.judul
-        holder.view.tv_item_rating.text = arrayList?.get(position)?.rating
-        holder.view.tv_item_detail.text = arrayList?.get(position)?.episode
+        holder.view.tv_item_name.text = arrayList[position].judul
+        holder.view.tv_item_rating.text = arrayList[position].rating
+        holder.view.tv_item_detail.text = arrayList[position].episode
 
         holder.view.cvList.setOnClickListener {
 
+            val db = FirebaseFirestore.getInstance()
+            db.collection("wisata").document(arrayList[position].judul)
+                    .update("watch", (arrayList[position].watch!!.toInt() + 1).toString())
+                    .addOnSuccessListener { result ->
+                    }
+                    .addOnFailureListener { exception ->
+                    }
+
             val i = Intent(context,DetailFilmActivity::class.java)
             i.putExtra("position",position)
-            i.putExtra("judul",arrayList?.get(position)?.judul)
-            i.putExtra("rating",arrayList?.get(position)?.rating)
-            i.putExtra("episode",arrayList?.get(position)?.episode)
-            i.putExtra("sinopsis",arrayList?.get(position)?.sinopsis)
+            i.putExtra("judul", arrayList[position].judul)
+            i.putExtra("rating", arrayList[position].rating)
+            i.putExtra("episode", arrayList[position].episode)
+            i.putExtra("sinopsis", arrayList[position].sinopsis)
             i.putExtra("imagePage",arrayList[position].image)
             i.putExtra("detail", arrayList[position].detail)
             i.putExtra("watch", arrayList[position].watch)

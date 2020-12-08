@@ -61,23 +61,15 @@ class DetailFilmActivity : AppCompatActivity() {
     lateinit var watch:String
     private var listDetail: ArrayList<String> = arrayListOf()
     private val  ratingUser = ArrayList<String>()
-    private  var jumlahuserRating: Int = 0
     private lateinit var layout: RelativeLayout
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
     private val listPhoto2 = ArrayList<String>()
-    var listPhoto3: ArrayList<Int> = arrayListOf()
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
     private var filePath: Uri? = null
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var id: String
-
-    object Constants {
-        const val STORAGE_PATH_UPLOADS = "uploads/"
-        const val DATABASE_PATH_UPLOADS = "uploads"
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,13 +77,6 @@ class DetailFilmActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_film)
 
         layout = findViewById(R.id.relativeLayout)
-//        layout4 = findViewById(R.id.rvPager)
-//        layout4.setOnTouchListener(object : OnSwipeTouchListener(this@DetailFilmActivity) {
-//            override fun onSwipeRight() {
-//                super.onSwipeRight()
-//                onBackPressed()
-//            }
-//        })
 
         firebaseStore = FirebaseStorage.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -126,19 +111,14 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
         tabLayout1.addTab(tabLayout1.newTab().setText("Details"))
-        tabLayout1.addTab(tabLayout1.newTab().setText("Cast"))
-        tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
+        tabLayout1.addTab(tabLayout1.newTab().setText("Location"))
+        tabLayout1.addTab(tabLayout1.newTab().setText("Reviews"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
-        val auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        id = user!!.uid
-
         getPhotos()
-        getRating()
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, ratingUser, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id, listDetail, watch)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, ratingUser, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, listDetail, watch)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
@@ -175,13 +155,6 @@ class DetailFilmActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val db = FirebaseFirestore.getInstance()
-        db.collection("kdramas").document(judul)
-                .update("watch", (watch.toInt() + 1).toString())
-                .addOnSuccessListener { result ->
-                }
-                .addOnFailureListener { exception ->
-                }
 
         val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
         startActivity(intentMain)
@@ -216,46 +189,6 @@ class DetailFilmActivity : AppCompatActivity() {
         }
         else{
             dbReference2.child(judul2).addValueEventListener(postListener2)
-        }
-    }
-
-    fun getRating(){
-        ratingUser.add(0,"0")
-        ratingUser.add(1,"0")
-        jumlahuserRating = 0
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        val dbReferenceR = firebaseDatabase.getReference("userRating")
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                for(data: DataSnapshot in dataSnapshot.children){
-                    val user2 = data.getValue(Upload::class.java)
-                    if(user2?.name!!.isNotEmpty()){
-                        if(user2.name == judul){
-                            ratingUser.add(0, user2.url!!)
-                        }
-                        jumlahuserRating += 1
-                        ratingUser.add(1, jumlahuserRating.toString())
-                    }
-                    else{
-                        ratingUser.add("0")
-                        ratingUser.add("0")
-                    }
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                ratingUser.add("0")
-                ratingUser.add("0")
-            }
-        }
-        var judul2 = judul
-        if(judul2.contains(".")){
-            judul2 = judul2.replace(".", "")
-            dbReferenceR.child(judul2).addValueEventListener(postListener)
-        }
-        else{
-            dbReferenceR.child(judul2).addValueEventListener(postListener)
         }
     }
 
