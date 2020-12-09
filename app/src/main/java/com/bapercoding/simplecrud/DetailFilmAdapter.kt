@@ -2,33 +2,21 @@
 
 package com.bapercoding.simplecrud
 
-import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Handler
 import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Html
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.detail_film.view.*
-import java.text.DecimalFormat
 
 
 @Suppress("DEPRECATION")
@@ -90,9 +78,10 @@ class DetailFilmAdapter(
         holder.view.tv_cast.text = "Reviews"
         holder.view.tv_jumla_cast.text = "View all (0)"
 
-        holder.view.tv_item_rating.visibility = View.GONE
-
-        holder.view.tv_item_rating.text = context.resources.getString(R.string.gmap)
+        val mystring = context.resources.getString(R.string.gmap)
+        val content = SpannableString(mystring)
+        content.setSpan(UnderlineSpan(), 0, mystring.length, 0)
+        holder.view.tv_item_rating.text = content
         holder.view.layout_map.setOnClickListener {
             val gmmIntentUri = Uri.parse(listDetail[0])
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

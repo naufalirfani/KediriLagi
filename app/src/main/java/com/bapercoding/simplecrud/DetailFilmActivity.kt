@@ -95,7 +95,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         val actionbar = supportActionBar
         //set actionbar title
-        actionbar!!.title = ""
+        actionbar!!.title = "Detail Wisata"
 
         //set back button
         actionbar.setDisplayHomeAsUpEnabled(true)

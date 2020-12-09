@@ -42,9 +42,13 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
 
         holder.view.cvList.setOnClickListener {
 
+            var judul = arrayList[position].judul
+            if(judul == "Air Terjun Irenggolo"){
+                judul = "Air terjun Irenggolo"
+            }
             val db = FirebaseFirestore.getInstance()
-            db.collection("wisata").document(arrayList[position].judul)
-                    .update("watch", (arrayList[position].watch!!.toInt() + 1).toString())
+            db.collection("wisata").document(judul)
+                    .update("watch", arrayList[position].watch!!.plus(1))
                     .addOnSuccessListener { result ->
                     }
                     .addOnFailureListener { exception ->
@@ -58,7 +62,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
             i.putExtra("sinopsis", arrayList[position].sinopsis)
             i.putExtra("imagePage",arrayList[position].image)
             i.putExtra("detail", arrayList[position].detail)
-            i.putExtra("watch", arrayList[position].watch)
+            i.putExtra("watch", arrayList[position].watch.toString())
             activity.startActivity(i)
             activity.overridePendingTransition(R.anim.enter, R.anim.exit)
         }

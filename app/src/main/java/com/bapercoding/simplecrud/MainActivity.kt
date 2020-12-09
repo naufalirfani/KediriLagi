@@ -254,6 +254,15 @@ class MainActivity : AppCompatActivity() {
             loading.setCancelable(true)
             loading.show()
             loading.setContentView(R.layout.progressdialog)
+            loadAllStudents(loading)
+        }
+        if(id == R.id.popular_sort){
+            val loading = ProgressDialog(this)
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.isIndeterminate = true
+            loading.setCancelable(true)
+            loading.show()
+            loading.setContentView(R.layout.progressdialog)
             loadAllRelease(loading)
         }
         return super.onOptionsItemSelected(item)
@@ -272,7 +281,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
                                 document.get("detail") as ArrayList<String>,
-                                document.getString("watch"),
+                                document.getLong("watch"),
                                 document.getString("imageMain")))
                     }
 
@@ -327,7 +336,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
                                 document.get("detail") as ArrayList<String>,
-                                document.getString("watch"),
+                                document.getLong("watch"),
                                 document.getString("imageMain")))
                     }
 
@@ -371,7 +380,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadAllRelease(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
         db.collection("wisata")
-                .orderBy("judul", Query.Direction.ASCENDING)
+                .orderBy("watch", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
                     arrayList.clear()
@@ -382,7 +391,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
                                 document.get("detail") as ArrayList<String>,
-                                document.getString("watch"),
+                                document.getLong("watch"),
                                 document.getString("imageMain")))
                     }
 

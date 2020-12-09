@@ -17,12 +17,12 @@
                 android:title="Alphabetical"
                 app:showAsAction="never"/>
             <item
-                android:id="@+id/rating_sort"
-                android:title="Top Rated"
-                app:showAsAction="never"/>
-            <item
                 android:id="@+id/popular_sort"
                 android:title="Most Popular"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/rating_sort"
+                android:title="Top Rated"
                 app:showAsAction="never"/>
         </menu>
     </item>
