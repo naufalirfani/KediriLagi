@@ -185,9 +185,15 @@ class DetailFilmActivity : AppCompatActivity() {
         var judul2 = judul
         if(judul2.contains(".")){
             judul2 = judul2.replace(".", "")
+            if(judul2 == "Air Terjun Irenggolo"){
+                judul2 = "Air terjun Irenggolo"
+            }
             dbReference2.child(judul2).addValueEventListener(postListener2)
         }
         else{
+            if(judul2 == "Air Terjun Irenggolo"){
+                judul2 = "Air terjun Irenggolo"
+            }
             dbReference2.child(judul2).addValueEventListener(postListener2)
         }
     }

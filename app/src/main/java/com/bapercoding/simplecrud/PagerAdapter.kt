@@ -24,7 +24,7 @@ class PagerAdapter (fm: FragmentManager,
         return when (position) {
 
             0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage,list2, list, listDetail, watch)!!
-            1 -> FragmentCast()
+            1 -> FragmentCast().newInstance(listDetail)!!
             2 -> FragmentEpisode()
             else -> FragmentPhoto().newInstance(list,list2,judul)!!
         }

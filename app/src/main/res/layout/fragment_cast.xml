@@ -5,10 +5,10 @@
         android:layout_height="match_parent"
         tools:context=".FragmentCast">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvCast"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:paddingTop="16dp"/>
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"/>
 
 </FrameLayout>

@@ -5,8 +5,10 @@ package com.bapercoding.simplecrud
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Handler
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentTransaction
@@ -89,6 +91,14 @@ class DetailFilmAdapter(
         holder.view.tv_jumla_cast.text = "View all (0)"
 
         holder.view.tv_item_rating.visibility = View.GONE
+
+        holder.view.tv_item_rating.text = context.resources.getString(R.string.gmap)
+        holder.view.layout_map.setOnClickListener {
+            val gmmIntentUri = Uri.parse(listDetail[0])
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            context.startActivity(mapIntent)
+        }
 
     }
 
